@@ -1,7 +1,7 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using MinimalSetGame.Data;
+using MinimalSetGame.Entities;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +29,7 @@ options =>
 });
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<Player>()
     .AddEntityFrameworkStores<DataContext>();
 
 var app = builder.Build();
@@ -41,7 +41,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<Player>();
 
 app.UseHttpsRedirection();
 
