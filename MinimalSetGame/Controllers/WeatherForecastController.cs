@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MinimalSetGame.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
@@ -13,10 +15,12 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    readonly IConfiguration _configuration;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -31,5 +35,11 @@ public class WeatherForecastController : ControllerBase
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+    }
+
+    [HttpGet("config")]
+    public string? GetConfig()
+    {
+        return _configuration.GetConnectionString("SetGameDb");
     }
 }
