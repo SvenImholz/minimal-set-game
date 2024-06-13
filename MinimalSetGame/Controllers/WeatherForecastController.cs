@@ -36,10 +36,4 @@ public class WeatherForecastController : ControllerBase
             })
             .ToArray();
     }
-
-    [HttpGet("config")]
-    public string? GetConfig()
-    {
-        return _configuration.GetConnectionString("SetGameDb");
-    }
 }
