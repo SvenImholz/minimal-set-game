@@ -4,8 +4,8 @@ namespace MinimalSetGame.Entities;
 
 public class Set
 {
-    List<Card> Cards { get; }
     public Guid GameId { get; private set; }
+    public List<Card> Cards { get; }
 
     /// <summary>
     /// Create a set of cards.
