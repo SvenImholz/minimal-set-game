@@ -8,8 +8,12 @@ namespace MinimalSetGame.Data;
 public class DataContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
 {
     readonly IConfiguration _configuration;
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Game> Games { get; set; }
 
-    public DataContext(DbContextOptions<DataContext> options, IConfiguration configuration): base
+    public DataContext(
+        DbContextOptions<DataContext> options,
+        IConfiguration configuration) : base
         (options)
     {
         _configuration = configuration;
@@ -19,4 +23,6 @@ public class DataContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
     {
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("SetGameDb"));
     }
+
+
 }

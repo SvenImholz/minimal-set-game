@@ -27,6 +27,7 @@ options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<Player>()

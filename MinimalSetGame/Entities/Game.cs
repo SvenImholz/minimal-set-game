@@ -12,6 +12,9 @@ public class Game
     public DateTime CreatedAt { get; set; }
     public DateTime? FinishedAt { get; set; }
 
+    private Game()
+    {}
+
     public Game(Player player)
     {
         Id = Guid.NewGuid(); // Fix: This should be created by the database

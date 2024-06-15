@@ -13,7 +13,7 @@ namespace MinimalSetGame.Controllers
         public async Task<ActionResult<List<Game>>> GetGames()
         {
             await Task.CompletedTask;
-            var game = new Game(new Player());
+            var game = new Game(new Player("Sven", "Imholz"));
             return Ok(game);
         }
     }
