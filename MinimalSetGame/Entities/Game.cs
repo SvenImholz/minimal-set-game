@@ -7,7 +7,7 @@ public class Game
     public Guid Id { get; set; }
     public List<Card> Deck { get; set; }
     public List<Set> Sets { get; set; } = [];
-    public Player Player { get; set; }
+    public Guid PlayerId { get; set; }
     public GameState State { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? FinishedAt { get; set; }
@@ -15,10 +15,9 @@ public class Game
     private Game()
     {}
 
-    public Game(Player player)
+    public Game(Guid playerId)
     {
-        Id = Guid.NewGuid(); // Fix: This should be created by the database
-        Player = player;
+        PlayerId = playerId;
         State = GameState.Started;
         CreatedAt = DateTime.UtcNow;
         Deck = CreateDeck();
@@ -41,8 +40,7 @@ public class Game
                     {
                         Deck.Add(
                         new Card(
-                        cardId: Guid.NewGuid(), // Fix: This should be created by the database
-                        gameId: Id,
+                        Id,
                         color,
                         fill,
                         number,

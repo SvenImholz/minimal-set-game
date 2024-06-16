@@ -14,14 +14,12 @@ public class Card
 
     private Card() {}
     public Card(
-        Guid cardId,
         Guid gameId,
         Color color,
         Fill fill,
         Number number,
         Shape shape)
     {
-        Id = cardId;
         GameId = gameId;
         Color = color;
         Fill = fill;
