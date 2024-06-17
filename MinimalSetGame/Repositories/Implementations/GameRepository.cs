@@ -18,10 +18,7 @@ public class GameRepository : IGameRepository
         _createGameService = createGameService;
     }
 
-    public Task<Game> GetGameById(Guid gameId)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<Game> GetGameById(Guid gameId) { throw new NotImplementedException(); }
 
     public Task<List<Game>> GetAllGamesFromPlayer(Guid playerId)
     {
@@ -32,20 +29,12 @@ public class GameRepository : IGameRepository
     {
         var game = await _createGameService.CreateGameAndCards(gameRequest.PlayerId);
 
-        await _context.Games.AddAsync(game);
-        await _context.SaveChangesAsync();
         return game;
     }
 
-    public Task Remove(Game game)
-    {
-        throw new NotImplementedException();
-    }
+    public Task Remove(Game game) { throw new NotImplementedException(); }
 
-    public Task<Game> Update(Game game)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<Game> Update(Game game) { throw new NotImplementedException(); }
 
     public async Task<List<Game>> GetAllGames()
     {
