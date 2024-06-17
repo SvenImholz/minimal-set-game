@@ -1,7 +1,9 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using MinimalSetGame.Contracts;
 using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
+using MinimalSetGame.Repositories;
 using MinimalSetGame.Repositories.Implementations;
 using MinimalSetGame.Repositories.Interfaces;
 using MinimalSetGame.Services;
@@ -37,6 +39,7 @@ builder.Services.AddIdentityApiEndpoints<Player>()
     .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<ICardRepository, CardRepository>();
 builder.Services.AddScoped<CreateGameService>();
 
 var app = builder.Build();
@@ -57,3 +60,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public class CardRepository : ICardRepository
+{
+    DataContext _context;
+
+    public Task<List<CardResponse>> GetCards(Guid gameId) => throw new NotImplementedException();
+    public Task<List<CardResponse>> DrawCards(Guid gameId, int count) => throw new NotImplementedException();
+}
