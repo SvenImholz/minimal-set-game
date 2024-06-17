@@ -4,6 +4,7 @@ using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
 using MinimalSetGame.Repositories.Implementations;
 using MinimalSetGame.Repositories.Interfaces;
+using MinimalSetGame.Services;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ builder.Services.AddIdentityApiEndpoints<Player>()
     .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<CreateGameService>();
 
 var app = builder.Build();
 

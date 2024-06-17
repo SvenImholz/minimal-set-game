@@ -3,16 +3,19 @@ using MinimalSetGame.Contracts;
 using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
 using MinimalSetGame.Repositories.Interfaces;
+using MinimalSetGame.Services;
 
 namespace MinimalSetGame.Repositories.Implementations;
 
 public class GameRepository : IGameRepository
 {
     readonly DataContext _context;
+    private readonly CreateGameService _createGameService;
 
-    public GameRepository(DataContext context)
+    public GameRepository(DataContext context, CreateGameService createGameService)
     {
         _context = context;
+        _createGameService = createGameService;
     }
 
     public Task<Game> GetGameById(Guid gameId)
@@ -27,7 +30,7 @@ public class GameRepository : IGameRepository
 
     public async Task<Game> Add(CreateGameRequest gameRequest)
     {
-        var game = new Game(gameRequest.PlayerId);
+        var game = await _createGameService.CreateGameAndCards(gameRequest.PlayerId);
 
         await _context.Games.AddAsync(game);
         await _context.SaveChangesAsync();
