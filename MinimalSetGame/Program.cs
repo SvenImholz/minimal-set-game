@@ -38,6 +38,8 @@ builder.Services.AddIdentityApiEndpoints<Player>()
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ICardRepository, CardRepository>();
+builder.Services.AddScoped<ISetsRepository, SetsRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<CreateGameService>();
 
 var app = builder.Build();
