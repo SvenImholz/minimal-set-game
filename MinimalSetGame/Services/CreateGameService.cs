@@ -1,6 +1,6 @@
 using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
-using SetGame.Domain.Common.Enums;
+using MinimalSetGame.Enums;
 
 namespace MinimalSetGame.Services;
 

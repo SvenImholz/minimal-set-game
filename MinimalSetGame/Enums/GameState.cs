@@ -1,7 +1,7 @@
-namespace SetGame.Domain.Common.Enums;
+namespace MinimalSetGame.Enums;
 
 public enum GameState
 {
-    Started,
-    Finished
+    Started = 0,
+    Finished = 1
 }
