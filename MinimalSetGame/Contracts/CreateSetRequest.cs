@@ -2,4 +2,4 @@ namespace MinimalSetGame.Contracts;
 
 public record CreateSetRequest(
     Guid GameId,
-    IEnumerable<CardResponse> Cards);
+    List<Guid> Cards);
