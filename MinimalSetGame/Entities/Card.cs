@@ -1,4 +1,4 @@
-using SetGame.Domain.Common.Enums;
+using MinimalSetGame.Enums;
 
 namespace MinimalSetGame.Entities;
 
