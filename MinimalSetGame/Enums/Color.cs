@@ -1,3 +1,3 @@
-namespace SetGame.Domain.Common.Enums;
+namespace MinimalSetGame.Enums;
 
-public enum Color { Red, Green, Purple }
+public enum Color { Red = 0, Green = 1, Purple = 2 }

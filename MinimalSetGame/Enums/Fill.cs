@@ -1,3 +1,3 @@
-namespace SetGame.Domain.Common.Enums;
+namespace MinimalSetGame.Enums;
 
-public enum Fill { Outlined, Striped, Solid }
+public enum Fill { Outlined = 0, Striped = 1, Solid = 2}
