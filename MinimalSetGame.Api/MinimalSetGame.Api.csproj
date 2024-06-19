@@ -5,9 +5,11 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>15c25c35-11c2-493c-9711-e90b858af8e7</UserSecretsId>
+      <RootNamespace>MinimalSetGame</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
@@ -22,7 +24,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Contracts\" />
       <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MinimalSetGame.Contracts\MinimalSetGame.Contracts.csproj" />
+      <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj" />
     </ItemGroup>
 
 </Project>

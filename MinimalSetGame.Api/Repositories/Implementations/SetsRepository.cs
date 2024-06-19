@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MinimalSetGame.Contracts;
 using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
@@ -14,12 +15,11 @@ public class SetsRepository : ISetsRepository
 
     public Task<Set?> GetSet(Guid setId) { throw new NotImplementedException(); }
 
-    public Task<List<Set>?> GetSets(Guid gameId)
+    public async Task<List<Set>?> GetSets(Guid gameId)
     {
-        var sets = _dataContext.Games.Find(gameId)
-            ?.Sets;
+        var game = await _dataContext.Games.Include(game => game.Sets).FirstOrDefaultAsync(g => g.Id == gameId);
 
-        return Task.FromResult(sets);
+        return (game?.Sets.ToList());
     }
 
     /// <summary>

@@ -1,4 +1,3 @@
-using MinimalSetGame.Contracts;
 using MinimalSetGame.Entities;
 
 namespace MinimalSetGame.Repositories.Interfaces;

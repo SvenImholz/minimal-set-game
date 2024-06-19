@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinimalSetGame.Contracts;
-using MinimalSetGame.Entities;
 using MinimalSetGame.Repositories.Interfaces;
 
 namespace MinimalSetGame.Controllers;

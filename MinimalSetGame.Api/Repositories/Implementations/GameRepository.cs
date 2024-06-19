@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MinimalSetGame.Contracts;
 using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
 using MinimalSetGame.Repositories.Interfaces;

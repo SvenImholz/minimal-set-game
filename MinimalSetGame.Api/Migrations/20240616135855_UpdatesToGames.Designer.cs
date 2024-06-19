@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MinimalSetGame.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240615103646_Initial")]
-    partial class Initial
+    [Migration("20240616135855_UpdatesToGames")]
+    partial class UpdatesToGames
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,68 @@ namespace MinimalSetGame.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MinimalSetGame.Entities.Player", b =>
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Card", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Fill")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDrawn")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("SetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Shape")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("SetId");
+
+                    b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Player", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -174,6 +235,12 @@ namespace MinimalSetGame.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -220,6 +287,22 @@ namespace MinimalSetGame.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Set", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("Set");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -231,7 +314,7 @@ namespace MinimalSetGame.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("MinimalSetGame.Entities.Player", null)
+                    b.HasOne("MinimalSetGame.Api.Entities.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -240,7 +323,7 @@ namespace MinimalSetGame.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("MinimalSetGame.Entities.Player", null)
+                    b.HasOne("MinimalSetGame.Api.Entities.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -255,7 +338,7 @@ namespace MinimalSetGame.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MinimalSetGame.Entities.Player", null)
+                    b.HasOne("MinimalSetGame.Api.Entities.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,11 +347,59 @@ namespace MinimalSetGame.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("MinimalSetGame.Entities.Player", null)
+                    b.HasOne("MinimalSetGame.Api.Entities.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Card", b =>
+                {
+                    b.HasOne("MinimalSetGame.Api.Entities.Game", null)
+                        .WithMany("Deck")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MinimalSetGame.Api.Entities.Set", null)
+                        .WithMany("Cards")
+                        .HasForeignKey("SetId");
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Game", b =>
+                {
+                    b.HasOne("MinimalSetGame.Api.Entities.Player", null)
+                        .WithMany("Games")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Set", b =>
+                {
+                    b.HasOne("MinimalSetGame.Api.Entities.Game", null)
+                        .WithMany("Sets")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Game", b =>
+                {
+                    b.Navigation("Deck");
+
+                    b.Navigation("Sets");
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Player", b =>
+                {
+                    b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("MinimalSetGame.Api.Entities.Set", b =>
+                {
+                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }
