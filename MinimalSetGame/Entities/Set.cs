@@ -8,8 +8,9 @@ public class Set
     public Guid GameId { get; private set; }
     public List<Card> Cards { get; }
 
-    private Set() { }
-
+    #pragma warning disable CS8618
+    private Set() {}
+    #pragma warning restore CS8618
 
     /// <summary>
     /// Create a set of cards.

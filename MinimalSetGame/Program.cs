@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
-using MinimalSetGame.Contracts;
 using MinimalSetGame.Data;
 using MinimalSetGame.Entities;
 using MinimalSetGame.Repositories;
@@ -60,11 +59,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-public class CardRepository : ICardRepository
-{
-    DataContext _context;
-
-    public Task<List<CardResponse>> GetCards(Guid gameId) => throw new NotImplementedException();
-    public Task<List<CardResponse>> DrawCards(Guid gameId, int count) => throw new NotImplementedException();
-}

@@ -11,6 +11,7 @@ public class DataContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
     public DbSet<Player> Players { get; set; }
     public DbSet<Game> Games { get; set; }
     public DbSet<Card> Cards { get; set; }
+    public DbSet<Set> Sets { get; set; }
 
     public DataContext(
         DbContextOptions<DataContext> options,
