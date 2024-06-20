@@ -1,8 +1,8 @@
-using MinimalSetGame.Data;
-using MinimalSetGame.Entities;
-using MinimalSetGame.Repositories.Interfaces;
+using MinimalSetGame.Api.Data;
+using MinimalSetGame.Api.Entities;
+using MinimalSetGame.Api.Repositories.Interfaces;
 
-namespace MinimalSetGame.Repositories.Implementations;
+namespace MinimalSetGame.Api.Repositories.Implementations;
 
 public class CardRepository : ICardRepository
 {
@@ -11,5 +11,6 @@ public class CardRepository : ICardRepository
     public CardRepository(DataContext context) { _context = context; }
 
     public Task<List<Card>> GetCards(Guid gameId) => throw new NotImplementedException();
-    public Task<List<Card>> DrawCards(Guid gameId, int count) => throw new NotImplementedException();
+    public Task<List<Card>> DrawCards(Guid gameId, int count) =>
+        throw new NotImplementedException();
 }

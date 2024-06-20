@@ -1,14 +1,14 @@
-using MinimalSetGame.Entities;
+using MinimalSetGame.Api.Entities;
 
-namespace MinimalSetGame.Repositories.Interfaces;
+namespace MinimalSetGame.Api.Repositories.Interfaces;
 
 public interface IGameRepository
 {
-      public Task<Game?> GetGameById(Guid gameId);
-      public Task<List<Game>> GetAllGamesFromPlayer(Guid playerId);
-      public Task<Game> Add(Guid playerId);
-      public Task Remove(Game game);
-      public Task<Game> Update(Game game);
+    public Task<Game?> GetGameById(Guid gameId);
+    public Task<List<Game>> GetAllGamesFromPlayer(Guid playerId);
+    public Task<Game> Add(Guid playerId);
+    public Task Remove(Game game);
+    public Task<Game> Update(Game game);
 
-      public Task<List<Game>> GetAllGames();
+    public Task<List<Game>> GetAllGames();
 }

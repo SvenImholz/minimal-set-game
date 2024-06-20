@@ -8,11 +8,20 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.5"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.5" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.6" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
+      <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
+      <AdditionalFiles Include="Components\Pages\Counter.razor" />
+      <AdditionalFiles Include="Components\Pages\Home.razor" />
     </ItemGroup>
 
 </Project>

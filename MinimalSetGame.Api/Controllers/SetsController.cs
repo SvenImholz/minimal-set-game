@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MinimalSetGame.Api.Repositories.Interfaces;
 using MinimalSetGame.Contracts;
-using MinimalSetGame.Repositories.Interfaces;
 
-namespace MinimalSetGame.Controllers;
+namespace MinimalSetGame.Api.Controllers;
 
 [ApiController]
 [Route("api/games/{gameId:guid}/[controller]")]
@@ -24,10 +24,9 @@ public class SetsController : ControllerBase
     public async Task<ActionResult<List<SetResponse>>> GetSets(Guid gameId)
     {
         var sets = await _setsRepository.GetSets(gameId);
+
         if (sets is null)
-        {
             return NotFound("Game not found.");
-        }
 
         // map to response
         var response = sets.Select(
@@ -50,10 +49,11 @@ public class SetsController : ControllerBase
         var result = await _setsRepository.TryAdd(setRequest);
 
         if (result is null)
-        {
             return BadRequest("Invalid set.");
-        }
 
-        return CreatedAtAction(nameof(TryCreateSet), new { gameId, setId = result.Id }, result);
+        return CreatedAtAction(
+        nameof(TryCreateSet),
+        new { gameId, setId = result.Id },
+        result);
     }
 }

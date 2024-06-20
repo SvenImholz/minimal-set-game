@@ -1,7 +1,7 @@
-using MinimalSetGame.Entities;
-using MinimalSetGame.Repositories.Interfaces;
+using MinimalSetGame.Api.Entities;
+using MinimalSetGame.Api.Repositories.Interfaces;
 
-namespace MinimalSetGame.Repositories.Implementations;
+namespace MinimalSetGame.Api.Repositories.Implementations;
 
 public class PlayerRepository : IPlayerRepository
 {

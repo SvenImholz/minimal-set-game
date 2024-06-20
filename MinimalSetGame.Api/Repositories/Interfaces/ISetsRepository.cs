@@ -1,7 +1,7 @@
+using MinimalSetGame.Api.Entities;
 using MinimalSetGame.Contracts;
-using MinimalSetGame.Entities;
 
-namespace MinimalSetGame.Repositories.Interfaces;
+namespace MinimalSetGame.Api.Repositories.Interfaces;
 
 public interface ISetsRepository
 {

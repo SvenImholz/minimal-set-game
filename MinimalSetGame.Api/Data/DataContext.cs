@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MinimalSetGame.Entities;
+using MinimalSetGame.Api.Entities;
 
-namespace MinimalSetGame.Data;
+namespace MinimalSetGame.Api.Data;
 
 public class DataContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
 {
     readonly IConfiguration _configuration;
-    public DbSet<Player> Players { get; set; }
-    public DbSet<Game> Games { get; set; }
-    public DbSet<Card> Cards { get; set; }
-    public DbSet<Set> Sets { get; set; }
 
     public DataContext(
         DbContextOptions<DataContext> options,
@@ -20,6 +16,10 @@ public class DataContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
     {
         _configuration = configuration;
     }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Game> Games { get; set; }
+    public DbSet<Card> Cards { get; set; }
+    public DbSet<Set> Sets { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -45,6 +45,4 @@ public class DataContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
                 (c => c.GameId)
             .OnDelete(DeleteBehavior.Cascade);
     }
-
-
 }

@@ -1,6 +1,7 @@
 = Error for HTTP POST /games
 
 The command:
+
 [,curl command]
 ----
 curl -X 'POST' \

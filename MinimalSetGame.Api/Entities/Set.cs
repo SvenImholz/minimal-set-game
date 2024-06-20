@@ -1,19 +1,16 @@
-using MinimalSetGame.Enums;
+using MinimalSetGame.Api.Enums;
 
-namespace MinimalSetGame.Entities;
+namespace MinimalSetGame.Api.Entities;
 
 public class Set
 {
-    public Guid Id { get; private set; }
-    public Guid GameId { get; private set; }
-    public List<Card> Cards { get; }
 
     #pragma warning disable CS8618
-    private Set() {}
+    Set() {}
     #pragma warning restore CS8618
 
     /// <summary>
-    /// Create a set of cards.
+    ///     Create a set of cards.
     /// </summary>
     /// <param name="gameId">The Game the set belongs to</param>
     /// <param name="possibleSet">A list of cards that is possibly a set</param>
@@ -28,12 +25,15 @@ public class Set
         GameId = gameId;
         Cards = possibleSet;
     }
+    public Guid Id { get; }
+    public Guid GameId { get; private set; }
+    public List<Card> Cards { get; }
 
     /// <summary>
-    /// Check if a list of cards is a set.
+    ///     Check if a list of cards is a set.
     /// </summary>
     /// <param name="possibleSet">The list of cards</param>
-    /// <returns>True if it's a set.<br/>Otherwise False</returns>
+    /// <returns>True if it's a set.<br />Otherwise False</returns>
     static bool IsSet(List<Card> possibleSet)
     {
         if (possibleSet.Count != 3)

@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using MinimalSetGame.Api.Data;
+using MinimalSetGame.Api.Entities;
+using MinimalSetGame.Api.Repositories.Interfaces;
 using MinimalSetGame.Contracts;
-using MinimalSetGame.Data;
-using MinimalSetGame.Entities;
-using MinimalSetGame.Enums;
-using MinimalSetGame.Repositories.Interfaces;
 
-namespace MinimalSetGame.Repositories.Implementations;
+namespace MinimalSetGame.Api.Repositories.Implementations;
 
 public class SetsRepository : ISetsRepository
 {
@@ -13,17 +12,18 @@ public class SetsRepository : ISetsRepository
 
     public SetsRepository(DataContext dataContext) { _dataContext = dataContext; }
 
-    public Task<Set?> GetSet(Guid setId) { throw new NotImplementedException(); }
+    public Task<Set?> GetSet(Guid setId) => throw new NotImplementedException();
 
     public async Task<List<Set>?> GetSets(Guid gameId)
     {
-        var game = await _dataContext.Games.Include(game => game.Sets).FirstOrDefaultAsync(g => g.Id == gameId);
+        var game = await _dataContext.Games.Include(game => game.Sets)
+            .FirstOrDefaultAsync(g => g.Id == gameId);
 
-        return (game?.Sets.ToList());
+        return game?.Sets.ToList();
     }
 
     /// <summary>
-    /// Tries to add a set to the game.
+    ///     Tries to add a set to the game.
     /// </summary>
     /// <param name="setRequest">The data to create a set</param>
     /// <returns>null or Task.CompletedTask</returns>
@@ -33,8 +33,12 @@ public class SetsRepository : ISetsRepository
 
         // Get the cards to add to the set but only if they are drawn
         var cardsToAdd = _dataContext.Cards
-            .Where(card => setRequest.Cards.Any(cardResponse => cardResponse == card
-            .Id && card.IsDrawn))
+            .Where(
+            card => setRequest.Cards.Any(
+            cardResponse => cardResponse ==
+                            card
+                                .Id &&
+                            card.IsDrawn))
             .ToList();
 
         // Check if the cards are drawn or already in a set.

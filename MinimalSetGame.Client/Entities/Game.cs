@@ -1,18 +1,9 @@
-using MinimalSetGame.Api.Enums;
+using MinimalSetGame.Client.Entities.Enums;
 
-namespace MinimalSetGame.Api.Entities;
+namespace MinimalSetGame.Client.Entities;
 
 public class Game
 {
-
-    Game() {}
-
-    public Game(Guid playerId)
-    {
-        PlayerId = playerId;
-        State = GameState.Started;
-        CreatedAt = DateTime.UtcNow;
-    }
     public Guid Id { get; set; }
     public List<Card> Deck { get; set; } = [];
     public List<Set> Sets { get; set; } = [];

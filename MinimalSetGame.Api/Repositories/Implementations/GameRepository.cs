@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using MinimalSetGame.Data;
-using MinimalSetGame.Entities;
-using MinimalSetGame.Repositories.Interfaces;
-using MinimalSetGame.Services;
+using MinimalSetGame.Api.Data;
+using MinimalSetGame.Api.Entities;
+using MinimalSetGame.Api.Repositories.Interfaces;
+using MinimalSetGame.Api.Services;
 
-namespace MinimalSetGame.Repositories.Implementations;
+namespace MinimalSetGame.Api.Repositories.Implementations;
 
 public class GameRepository : IGameRepository
 {
     readonly DataContext _context;
-    private readonly CreateGameService _createGameService;
+    readonly CreateGameService _createGameService;
 
     public GameRepository(DataContext context, CreateGameService createGameService)
     {
@@ -44,12 +44,9 @@ public class GameRepository : IGameRepository
         return game;
     }
 
-    public Task Remove(Game game) { throw new NotImplementedException(); }
+    public Task Remove(Game game) => throw new NotImplementedException();
 
-    public Task<Game> Update(Game game) { throw new NotImplementedException(); }
+    public Task<Game> Update(Game game) => throw new NotImplementedException();
 
-    public async Task<List<Game>> GetAllGames()
-    {
-        return await _context.Games.ToListAsync();
-    }
+    public async Task<List<Game>> GetAllGames() => await _context.Games.ToListAsync();
 }

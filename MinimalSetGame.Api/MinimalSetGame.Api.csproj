@@ -4,33 +4,32 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>15c25c35-11c2-493c-9711-e90b858af8e7</UserSecretsId>
-      <RootNamespace>MinimalSetGame</RootNamespace>
-  </PropertyGroup>
+        <UserSecretsId>15c25c35-11c2-493c-9711-e90b858af8e7</UserSecretsId>
+        <RootNamespace>MinimalSetGame.Api</RootNamespace>
+    </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts\" />
-      <Folder Include="Migrations\" />
+        <Folder Include="Migrations\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MinimalSetGame.Contracts\MinimalSetGame.Contracts.csproj" />
-      <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj" />
+        <ProjectReference Include="..\MinimalSetGame.Contracts\MinimalSetGame.Contracts.csproj"/>
+        <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj"/>
     </ItemGroup>
 
 </Project>

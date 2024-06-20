@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MinimalSetGame.Api.Repositories.Interfaces;
 using MinimalSetGame.Contracts;
-using MinimalSetGame.Repositories.Interfaces;
 
-namespace MinimalSetGame.Controllers;
+namespace MinimalSetGame.Api.Controllers;
 
 [ApiController]
 [Route("api/games/{gameId:guid}/[controller]")]

@@ -1,17 +1,14 @@
-using MinimalSetGame.Data;
-using MinimalSetGame.Entities;
-using MinimalSetGame.Enums;
+using MinimalSetGame.Api.Data;
+using MinimalSetGame.Api.Entities;
+using MinimalSetGame.Api.Enums;
 
-namespace MinimalSetGame.Services;
+namespace MinimalSetGame.Api.Services;
 
 public class CreateGameService
 {
     readonly DataContext _context;
 
-    public CreateGameService(DataContext context)
-    {
-        _context = context;
-    }
+    public CreateGameService(DataContext context) { _context = context; }
 
     public async Task<Game> CreateGameAndCards(Guid playerId)
     {
@@ -31,31 +28,23 @@ public class CreateGameService
     }
 
     /// <summary>
-    /// Create a deck of cards with all possible
-    /// combinations of color, fill, number, and shape.
+    ///     Create a deck of cards with all possible
+    ///     combinations of color, fill, number, and shape.
     /// </summary>
     static List<Card> CreateDeck(Guid gameId)
     {
         var deck = new List<Card>();
         foreach (Color color in Enum.GetValues(typeof(Color)))
-        {
-            foreach (Fill fill in Enum.GetValues(typeof(Fill)))
-            {
-                foreach (Number number in Enum.GetValues(typeof(Number)))
-                {
-                    foreach (Shape shape in Enum.GetValues(typeof(Shape)))
-                    {
-                        deck.Add(
-                        new Card(
-                        gameId,
-                        color,
-                        fill,
-                        number,
-                        shape));
-                    }
-                }
-            }
-        }
+        foreach (Fill fill in Enum.GetValues(typeof(Fill)))
+        foreach (Number number in Enum.GetValues(typeof(Number)))
+        foreach (Shape shape in Enum.GetValues(typeof(Shape)))
+            deck.Add(
+            new Card(
+            gameId,
+            color,
+            fill,
+            number,
+            shape));
 
         return deck;
     }

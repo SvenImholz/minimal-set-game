@@ -1,10 +1,10 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
-using MinimalSetGame.Data;
-using MinimalSetGame.Entities;
-using MinimalSetGame.Repositories.Implementations;
-using MinimalSetGame.Repositories.Interfaces;
-using MinimalSetGame.Services;
+using MinimalSetGame.Api.Data;
+using MinimalSetGame.Api.Entities;
+using MinimalSetGame.Api.Repositories.Implementations;
+using MinimalSetGame.Api.Repositories.Interfaces;
+using MinimalSetGame.Api.Services;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,11 +22,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
 options =>
 {
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    options.AddSecurityDefinition(
+    "oauth2",
+    new OpenApiSecurityScheme
     {
-       In = ParameterLocation.Header,
-       Name = "Authorization",
-       Type = SecuritySchemeType.ApiKey
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
