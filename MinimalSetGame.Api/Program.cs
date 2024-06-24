@@ -49,11 +49,13 @@ options =>
     options.AddDefaultPolicy(
     builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("https://localhost:7218") // replace with your client's URL
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
+
 
 var app = builder.Build();
 

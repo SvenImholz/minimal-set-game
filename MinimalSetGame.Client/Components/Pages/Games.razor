@@ -1,8 +1,8 @@
 @page "/Games"
 @inject IGamesHttpRepository _gamesHttpRepository
-
-@using MinimalSetGame.Client.Entities
 @using MinimalSetGame.Client.HttpRepositories.Interfaces
+@using MinimalSetGame.Contracts
+
 <h3>Games</h3>
 
 <div class="row">
@@ -13,11 +13,12 @@
         <button>New Game</button>
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        @*Place for games*@
-    </div>
-</div>
+<ul>
+    @foreach (var game in _games)
+    {
+        <li>Id: @game.Id</li>
+    }
+</ul>
 <div class="row">
     <div class="col">
         @*Place for pagination*@
@@ -25,10 +26,11 @@
 </div>
 
 @code {
-    List<Game> _games = [];
+    List<GameResponse> _games = [];
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _games = await _gamesHttpRepository.GetGames();
     }
 

@@ -43,8 +43,8 @@ namespace MinimalSetGame.Client.Identity
         /// Create a new instance of the auth provider.
         /// </summary>
         /// <param name="httpClientFactory">Factory to retrieve auth client.</param>
-        public CookieAuthenticationStateProvider(IHttpClientFactory httpClientFactory)
-            => _httpClient = httpClientFactory.CreateClient("Auth");
+        public CookieAuthenticationStateProvider(HttpClient httpClient)
+            => _httpClient = httpClient;
 
         /// <summary>
         /// Register a new user.
@@ -138,13 +138,14 @@ namespace MinimalSetGame.Client.Identity
                 if (result.IsSuccessStatusCode)
                 {
                     // need to refresh auth state
+
                     NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
                     // success!
                     return new FormResult { Succeeded = true };
                 }
             }
-            catch
+            catch(Exception e)
             {}
 
             // unknown error
@@ -199,38 +200,38 @@ namespace MinimalSetGame.Client.Identity
                         c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
                         .Select(c => new Claim(c.Key, c.Value)));
 
-                    // tap the roles endpoint for the user's roles
-                    var rolesResponse = await _httpClient.GetAsync("roles");
-
-                    // throw if request fails
-                    rolesResponse.EnsureSuccessStatusCode();
-
-                    // read the response into a string
-                    var rolesJson = await rolesResponse.Content.ReadAsStringAsync();
-
-                    // deserialize the roles string into an array
-                    var roles = JsonSerializer.Deserialize<RoleClaim[]>(
-                    rolesJson,
-                    _jsonSerializerOptions);
-
-                    // if there are roles, add them to the claims collection
-                    if (roles?.Length > 0)
-                    {
-                        foreach (var role in roles)
-                        {
-                            if (!string.IsNullOrEmpty(role.Type) &&
-                                !string.IsNullOrEmpty(role.Value))
-                            {
-                                claims.Add(
-                                new Claim(
-                                role.Type,
-                                role.Value,
-                                role.ValueType,
-                                role.Issuer,
-                                role.OriginalIssuer));
-                            }
-                        }
-                    }
+                    // // tap the roles endpoint for the user's roles
+                    // var rolesResponse = await _httpClient.GetAsync("roles");
+                    //
+                    // // throw if request fails
+                    // rolesResponse.EnsureSuccessStatusCode();
+                    //
+                    // // read the response into a string
+                    // var rolesJson = await rolesResponse.Content.ReadAsStringAsync();
+                    //
+                    // // deserialize the roles string into an array
+                    // var roles = JsonSerializer.Deserialize<RoleClaim[]>(
+                    // rolesJson,
+                    // _jsonSerializerOptions);
+                    //
+                    // // if there are roles, add them to the claims collection
+                    // if (roles?.Length > 0)
+                    // {
+                    //     foreach (var role in roles)
+                    //     {
+                    //         if (!string.IsNullOrEmpty(role.Type) &&
+                    //             !string.IsNullOrEmpty(role.Value))
+                    //         {
+                    //             claims.Add(
+                    //             new Claim(
+                    //             role.Type,
+                    //             role.Value,
+                    //             role.ValueType,
+                    //             role.Issuer,
+                    //             role.OriginalIssuer));
+                    //         }
+                    //     }
+                    // }
 
                     // set the principal
                     var id = new ClaimsIdentity(

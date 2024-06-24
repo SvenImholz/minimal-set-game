@@ -17,7 +17,8 @@ namespace BlazorWasmAuth.Identity
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // include cookies!
-            request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+             request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+            InnerHandler ??= new HttpClientHandler();
             request.Headers.Add("X-Requested-With", ["XMLHttpRequest"]);
 
             return base.SendAsync(request, cancellationToken);

@@ -5,7 +5,7 @@ public record GameResponse(
     Guid Id,
     List<CardResponse> Deck,
     List<SetResponse> Sets,
-    string State,
+    int State,
     DateTime CreatedAt,
     DateTime? FinishedAt
 );

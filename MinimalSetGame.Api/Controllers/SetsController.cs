@@ -7,7 +7,7 @@ namespace MinimalSetGame.Api.Controllers;
 
 [ApiController]
 [Route("api/games/{gameId:guid}/[controller]")]
-// [Authorize]
+[Authorize]
 [Produces("application/json")]
 public class SetsController : ControllerBase
 {
