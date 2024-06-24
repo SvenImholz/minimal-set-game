@@ -1,6 +1,6 @@
 using MinimalSetGame.Shared.Enums;
 
-namespace MinimalSetGame.Client.Entities;
+namespace MinimalSetGame.Shared.Entities;
 
 public class Card
 {

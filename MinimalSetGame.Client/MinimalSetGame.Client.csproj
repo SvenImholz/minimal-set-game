@@ -14,14 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
       <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
       <AdditionalFiles Include="Components\Pages\Counter.razor" />
       <AdditionalFiles Include="Components\Pages\Home.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj" />
     </ItemGroup>
 
 </Project>

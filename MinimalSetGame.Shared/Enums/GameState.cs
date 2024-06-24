@@ -1,4 +1,4 @@
-namespace MinimalSetGame.Client.Entities.Enums;
+namespace MinimalSetGame.Shared.Enums;
 
 public enum GameState
 {

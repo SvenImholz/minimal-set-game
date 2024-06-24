@@ -9,7 +9,7 @@ namespace MinimalSetGame.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
-[Authorize]
+// [Authorize]
 public class GamesController : ControllerBase
 {
     readonly IGameRepository _gameRepository;

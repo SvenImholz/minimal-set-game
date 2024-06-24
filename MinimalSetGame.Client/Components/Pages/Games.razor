@@ -1,6 +1,35 @@
 @page "/Games"
+@inject IGamesHttpRepository _gamesHttpRepository
+
+@using MinimalSetGame.Client.Entities
+@using MinimalSetGame.Client.HttpRepositories.Interfaces
 <h3>Games</h3>
 
+<div class="row">
+    <div class="col-md-10">
+        @*Place for search and sort*@
+    </div>
+    <div class="col-md-2">
+        <button>New Game</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for games*@
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @*Place for pagination*@
+    </div>
+</div>
+
 @code {
-    
+    List<Game> _games = [];
+
+    protected override async void OnInitialized()
+    {
+        _games = await _gamesHttpRepository.GetGames();
+    }
+
 }

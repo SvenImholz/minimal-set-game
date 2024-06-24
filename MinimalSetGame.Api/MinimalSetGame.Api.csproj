@@ -29,7 +29,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MinimalSetGame.Contracts\MinimalSetGame.Contracts.csproj"/>
-        <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj"/>
     </ItemGroup>
 
 </Project>

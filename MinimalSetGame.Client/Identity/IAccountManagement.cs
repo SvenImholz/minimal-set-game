@@ -1,6 +1,6 @@
 ﻿using BlazorWasmAuth.Identity.Models;
 
-namespace BlazorWasmAuth.Identity
+namespace MinimalSetGame.Client.Identity
 {
     /// <summary>
     /// Account management services.

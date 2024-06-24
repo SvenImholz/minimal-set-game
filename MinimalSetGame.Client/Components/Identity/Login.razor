@@ -1,5 +1,5 @@
 @page "/login"
-@using BlazorWasmAuth.Identity
+@using MinimalSetGame.Client.Identity
 @inject IAccountManagement Acct
 
 <PageTitle>Login</PageTitle>
@@ -44,7 +44,7 @@
     private string password = string.Empty;
     private string[] errorList = [];
 
-    public async Task DoLoginAsync()
+    async Task DoLoginAsync()
     {
         success = errors = false;
         errorList = [];

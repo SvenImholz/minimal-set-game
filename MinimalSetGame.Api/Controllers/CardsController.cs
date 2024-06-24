@@ -7,7 +7,7 @@ namespace MinimalSetGame.Api.Controllers;
 
 [ApiController]
 [Route("api/games/{gameId:guid}/[controller]")]
-[Authorize]
+// [Authorize]
 public class CardsController : ControllerBase
 {
     readonly ICardRepository _cardRepository;
