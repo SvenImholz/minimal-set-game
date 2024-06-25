@@ -65,6 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors();
 
 app.MapIdentityApi<Player>();
@@ -74,7 +75,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapGet("api/hello-world", () => "Hello, World!");
 
 app.Run();

@@ -145,7 +145,7 @@ namespace MinimalSetGame.Client.Identity
                     return new FormResult { Succeeded = true };
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {}
 
             // unknown error
@@ -191,7 +191,8 @@ namespace MinimalSetGame.Client.Identity
                     var claims = new List<Claim>
                     {
                         new(ClaimTypes.Name, userInfo.Email),
-                        new(ClaimTypes.Email, userInfo.Email)
+                        new(ClaimTypes.Email, userInfo.Email),
+                        new("Id", userInfo.Claims.FirstOrDefault(c => c.Key == "Id").Value)
                     };
 
                     // add any additional claims

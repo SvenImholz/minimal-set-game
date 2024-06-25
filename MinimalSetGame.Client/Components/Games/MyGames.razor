@@ -1,4 +1,7 @@
+@using System.Diagnostics
 @inject IGamesHttpRepository _gamesHttpRepository
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
 
 <h3>My Games</h3>
 
@@ -37,7 +40,8 @@
 
 @code {
     List<GameResponse> _games = [];
-
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
