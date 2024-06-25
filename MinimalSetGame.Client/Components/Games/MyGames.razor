@@ -1,8 +1,6 @@
-@page "/Games"
 @inject IGamesHttpRepository _gamesHttpRepository
 
-
-<h3>Games</h3>
+<h3>My Games</h3>
 
 <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary">New Game</button>
@@ -21,18 +19,18 @@
     <tbody>
     @foreach (var game in _games)
     {
-    <tr>
-        <td>@game.Id</td>
-        <td>@game.State</td>
-        <td>@game.CreatedAt</td>
-        <td>@game.FinishedAt</td>
-        <td>
-            @if (game.FinishedAt == null)
-            {
-            <button class="btn btn-success">Continue</button>
-            }
-        </td>
-    </tr>
+        <tr>
+            <td>@game.Id</td>
+            <td>@game.State</td>
+            <td>@game.CreatedAt</td>
+            <td>@game.FinishedAt</td>
+            <td>
+                @if (game.FinishedAt == null)
+                {
+                    <button class="btn btn-success">Continue</button>
+                }
+            </td>
+        </tr>
     }
     </tbody>
 </table>
@@ -44,6 +42,7 @@
     {
         await base.OnInitializedAsync();
         _games = await _gamesHttpRepository.GetGames();
+
     }
 
 }
