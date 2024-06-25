@@ -192,7 +192,6 @@ namespace MinimalSetGame.Client.Identity
                     {
                         new(ClaimTypes.Name, userInfo.Email),
                         new(ClaimTypes.Email, userInfo.Email),
-                        new("Id", userInfo.Claims.FirstOrDefault(c => c.Key == "Id").Value)
                     };
 
                     // add any additional claims
