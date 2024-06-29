@@ -1,6 +1,6 @@
-@using System.Diagnostics
-@inject IGamesHttpRepository _gamesHttpRepository
+@inject IGamesHttpRepository GamesHttpRepository
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 @attribute [Authorize]
 
 <h3>My Games</h3>
@@ -30,7 +30,11 @@
             <td>
                 @if (game.FinishedAt == null)
                 {
-                    <button class="btn btn-success">Continue</button>
+                    <button
+                        class="btn btn-success"
+                        @onclick="() => ContinueGame(game.Id)">
+                        Continue
+                    </button>
                 }
             </td>
         </tr>
@@ -40,13 +44,16 @@
 
 @code {
     List<GameResponse> _games = [];
+
     [CascadingParameter]
     private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        _games = await _gamesHttpRepository.GetGames();
-
+        _games = await GamesHttpRepository.GetGames();
     }
+
+    private void ContinueGame(Guid gameId) { NavigationManager.NavigateTo($"games/{gameId}"); }
 
 }

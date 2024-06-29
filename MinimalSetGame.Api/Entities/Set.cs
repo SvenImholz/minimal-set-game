@@ -34,7 +34,7 @@ public class Set
     /// </summary>
     /// <param name="possibleSet">The list of cards</param>
     /// <returns>True if it's a set.<br />Otherwise False</returns>
-    static bool IsSet(List<Card> possibleSet)
+    public static bool IsSet(List<Card> possibleSet)
     {
         if (possibleSet.Count != 3)
             return false;

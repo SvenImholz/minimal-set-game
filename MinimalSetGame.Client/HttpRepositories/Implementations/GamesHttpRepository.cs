@@ -18,11 +18,21 @@ public class GamesHttpRepository : IGamesHttpRepository
 
     public async Task<List<GameResponse>> GetGames()
     {
-        var response = await _httpClient.GetFromJsonAsync<List<GameResponse>>("/api/games") ?? [];
+        var response =
+            await _httpClient.GetFromJsonAsync<List<GameResponse>>("/api/games") ?? [];
+
         return response;
     }
 
-    public Task<GameResponse?> GetGameById(Guid gameId) => throw new NotImplementedException();
+    public async Task<GameResponse?> GetGameById(Guid gameId)
+    {
+        var gameResponse = await _httpClient.GetFromJsonAsync<GameResponse>
+                ($"/api/games/{gameId}");
+
+        return gameResponse;
+
+
+    }
     public Task<List<GameResponse>> GetGamesByPlayerId(Guid playerId) =>
         throw new NotImplementedException();
 }

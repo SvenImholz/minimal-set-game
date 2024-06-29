@@ -1,0 +1,46 @@
+@page "/Games/{GameId:guid}"
+@inject IGamesHttpRepository GamesHttpRepository
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<PageTitle>Game</PageTitle>
+
+<div class="container bg-light">
+    <div class="row">
+        @if (_gameResponse?.Deck is not null)
+        {
+            @foreach (var card in _gameResponse.Deck.Where(c => c.IsDrawn))
+            {
+                <div class="col-sm">
+                    @* Replace this with the actual content of the card *@
+                    <div class="card">
+                        Card is drawn: @card.IsDrawn
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="card">
+                No cards drawn yet
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Guid GameId { get; set; }
+
+    private GameResponse? _gameResponse;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _gameResponse = await GamesHttpRepository.GetGameById(GameId);
+
+        if (_gameResponse is null)
+            NavigationManager.NavigateTo("games");
+    }
+}

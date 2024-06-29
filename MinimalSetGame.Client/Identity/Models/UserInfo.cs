@@ -1,4 +1,4 @@
-﻿namespace BlazorWasmAuth.Identity.Models
+﻿namespace MinimalSetGame.Client.Identity.Models
 {
     /// <summary>
     /// User info from identity endpoint to establish claims.

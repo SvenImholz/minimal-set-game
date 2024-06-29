@@ -4,6 +4,8 @@ using System.Text;
 using System.Text.Json;
 using BlazorWasmAuth.Identity.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using MinimalSetGame.Client.Identity.Models;
+using MinimalSetGame.Contracts;
 
 namespace MinimalSetGame.Client.Identity
 {
@@ -42,7 +44,6 @@ namespace MinimalSetGame.Client.Identity
         /// <summary>
         /// Create a new instance of the auth provider.
         /// </summary>
-        /// <param name="httpClientFactory">Factory to retrieve auth client.</param>
         public CookieAuthenticationStateProvider(HttpClient httpClient)
             => _httpClient = httpClient;
 
@@ -128,11 +129,8 @@ namespace MinimalSetGame.Client.Identity
                 // login with cookies
                 var result = await _httpClient.PostAsJsonAsync(
                 "login?useCookies=true",
-                new
-                {
-                    email,
-                    password
-                });
+                new LoginPlayerRequest(email, password)
+                );
 
                 // success?
                 if (result.IsSuccessStatusCode)
@@ -164,7 +162,7 @@ namespace MinimalSetGame.Client.Identity
         /// until the changed state notification is raised.
         /// </remarks>
         /// <returns>The authentication state asynchronous request.</returns>
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        override public async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             _authenticated = false;
 
@@ -174,7 +172,8 @@ namespace MinimalSetGame.Client.Identity
             try
             {
                 // the user info endpoint is secured, so if the user isn't logged in this will fail
-                var userResponse = await _httpClient.GetAsync("manage/info");
+                var userResponse = await _httpClient.GetAsync("api/player/manage/info");
+                //Todo: Create own endpoint for user info to get PlayerResponse and add the claims to the user
 
                 // throw if user info wasn't retrieved
                 userResponse.EnsureSuccessStatusCode();
@@ -250,9 +249,9 @@ namespace MinimalSetGame.Client.Identity
 
         public async Task LogoutAsync()
         {
-            const string Empty = "{}";
+            const string empty = "{}";
             var emptyContent = new StringContent(
-            Empty,
+            empty,
             Encoding.UTF8,
             "application/json");
             await _httpClient.PostAsync("logout", emptyContent);
