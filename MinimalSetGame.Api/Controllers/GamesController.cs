@@ -101,30 +101,4 @@ public class GamesController : ControllerBase
 
         return Ok(hint);
     }
-
-/// <summary>
-/// Recursively get all combinations with a given length of a list of cards.
-/// </summary>
-/// <param name="list">The list of cards you want to get the combinations from</param>
-/// <param name="length">The length of the combination</param>
-/// <returns>A IEnumerable with a Lists of cards for each possible combination</returns>
-    static IEnumerable<List<Card>> GetCombinations(List<Card> list, int length)
-    {
-        for (var i = 0; i < list.Count; i++)
-        {
-            if (length == 1)
-            {
-                yield return [list[i]];
-            }
-            else
-            {
-                foreach (var next in GetCombinations(
-                         list.Skip(i + 1).ToList(),
-                         length - 1))
-                {
-                    yield return new List<Card> { list[i] }.Concat(next).ToList();
-                }
-            }
-        }
-    }
 }
