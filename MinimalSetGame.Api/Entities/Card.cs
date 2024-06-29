@@ -5,7 +5,7 @@ namespace MinimalSetGame.Api.Entities;
 public class Card
 {
 
-    Card() {}
+    public Card() {}
     public Card(
         Guid gameId,
         Color color,
@@ -20,12 +20,12 @@ public class Card
         Shape = shape;
     }
     public Guid Id { get; }
-    public Guid GameId { get; private set; }
-    public Color Color { get; private set; }
-    public Shape Shape { get; private set; }
-    public Fill Fill { get; private set; }
-    public Number Number { get; private set; }
-    public bool IsDrawn { get; private set; }
+    public Guid GameId { get; set; }
+    public Color Color { get; set; }
+    public Shape Shape { get; set; }
+    public Fill Fill { get; set; }
+    public Number Number { get; set; }
+    public bool IsDrawn { get; set; }
     /// <summary>
     ///     Set IsDrawn to true. This card has been drawn and cannot be drawn again.
     /// </summary>

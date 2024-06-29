@@ -9,12 +9,12 @@ namespace MinimalSetGame.Api.Repositories.Implementations;
 public class GameRepository : IGameRepository
 {
     readonly DataContext _context;
-    readonly CreateGameService _createGameService;
+    readonly GameService _gameService;
 
-    public GameRepository(DataContext context, CreateGameService createGameService)
+    public GameRepository(DataContext context, GameService gameService)
     {
         _context = context;
-        _createGameService = createGameService;
+        _gameService = gameService;
     }
 
     public async Task<Game?> GetGameById(Guid gameId)
@@ -39,7 +39,7 @@ public class GameRepository : IGameRepository
 
     public async Task<Game> Add(Guid playerId)
     {
-        var game = await _createGameService.CreateGameAndCards(playerId);
+        var game = await _gameService.CreateGameAndCards(playerId);
 
         return game;
     }

@@ -1,7 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MinimalSetGame.Api.Data;
+using MinimalSetGame.Api.Entities;
 using MinimalSetGame.Api.Repositories.Interfaces;
+using MinimalSetGame.Api.Services;
 using MinimalSetGame.Contracts;
 
 namespace MinimalSetGame.Api.Controllers;
@@ -46,7 +49,8 @@ public class GamesController : ControllerBase
             (int)game.State,
             game.CreatedAt,
             game.FinishedAt)
-            ).ToList();
+            )
+            .ToList();
 
         return Ok(response);
     }
@@ -80,5 +84,47 @@ public class GamesController : ControllerBase
         nameof(GetGames),
         new { id = createdGame.Id },
         createdGame);
+    }
+
+    [HttpGet("{id:Guid}/hint")]
+    public async Task<ActionResult<HintResponse>> GetHint(Guid id)
+    {
+        var game = await _gameRepository.GetGameById(id);
+
+        if (game is null)
+            return NotFound("No Game Found");
+
+        var hint = GameService.GetHint(game);
+
+        if (hint is null)
+            return NotFound("No possible set found");
+
+        return Ok(hint);
+    }
+
+/// <summary>
+/// Recursively get all combinations with a given length of a list of cards.
+/// </summary>
+/// <param name="list">The list of cards you want to get the combinations from</param>
+/// <param name="length">The length of the combination</param>
+/// <returns>A IEnumerable with a Lists of cards for each possible combination</returns>
+    static IEnumerable<List<Card>> GetCombinations(List<Card> list, int length)
+    {
+        for (var i = 0; i < list.Count; i++)
+        {
+            if (length == 1)
+            {
+                yield return [list[i]];
+            }
+            else
+            {
+                foreach (var next in GetCombinations(
+                         list.Skip(i + 1).ToList(),
+                         length - 1))
+                {
+                    yield return new List<Card> { list[i] }.Concat(next).ToList();
+                }
+            }
+        }
     }
 }
