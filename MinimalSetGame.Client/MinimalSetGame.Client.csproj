@@ -25,4 +25,8 @@
       <ProjectReference Include="..\MinimalSetGame.Shared\MinimalSetGame.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\assets\" />
+    </ItemGroup>
+
 </Project>

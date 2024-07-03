@@ -199,7 +199,6 @@ namespace MinimalSetGame.Client.Identity
                         c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
                         .Select(c => new Claim(c.Key, c.Value)));
 
-
                     // set the principal
                     var id = new ClaimsIdentity(
                     claims,

@@ -1,0 +1,24 @@
+@using MinimalSetGame.Shared.Enums
+
+<div class="card-images">
+    @for (var i = 0; i < CardResponse.Number; i++)
+    {
+        <img src="@GetImagePath(CardResponse)" alt="Card Image"/>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public required CardResponse CardResponse;
+
+    private string GetImagePath(CardResponse cardResponse)
+    {
+        var colorName = Enum.GetName(typeof(Color), cardResponse.Color);
+        var shapeName = Enum.GetName(typeof(Shape), cardResponse.Shape);
+        var fillName = Enum.GetName(typeof(Fill), cardResponse.Fill);
+
+        return $"assets/set-card-icons/{shapeName}_{fillName}_{colorName}.png";
+    }
+
+}
