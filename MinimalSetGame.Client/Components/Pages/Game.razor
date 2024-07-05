@@ -5,23 +5,27 @@
 
 <PageTitle>Game</PageTitle>
 
-<div class="container bg-light">
-    <div class="row">
+<div class="container bg-light p-4">
+    <div class="row justify-content-center">
         @if (_gameResponse?.Deck is not null)
         {
             @foreach (var card in _gameResponse.Deck.Where(c => c.IsDrawn))
             {
-                <div class="col-sm">
-                    @* Replace this with the actual content of the card *@
-                    <div class="card">
-                        Card is drawn: @card.IsDrawn
-                    </div>
+                <div class="col-auto m-2">
+                    <Card CardResponse="@card" IsSelected="@IsCardSelected(card)"
+                          OnCardSelected="OnCardClick"></Card>
                 </div>
+                _cardCount++;
+                if (_cardCount % 5 == 0)
+                {
+                    <!--This creates a new line after every 5 cards -->
+                    @:</div><div class="row justify-content-center">
+                }
             }
         }
         else
         {
-            <div class="card">
+            <div class="card text-center">
                 No cards drawn yet
             </div>
         }
@@ -29,6 +33,10 @@
 </div>
 
 @code {
+
+    int _cardCount = 0;
+
+    List<CardResponse> _selectedCards = [];
 
     [Parameter]
     public Guid GameId { get; set; }
@@ -43,4 +51,18 @@
         if (_gameResponse is null)
             NavigationManager.NavigateTo("games");
     }
+
+    private async Task OnCardClick(CardResponse card)
+    {
+        if (IsCardSelected(card))
+        {
+            _selectedCards.Remove(card);
+        }
+        else
+        {
+            _selectedCards.Add(card);
+        }
+    }
+
+    private bool IsCardSelected(CardResponse card) { return _selectedCards.Contains(card); }
 }

@@ -101,3 +101,16 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+.selected {
+    border: 2px solid #007bff !important; /* Bootstrap primary color for example */
+}
+
+.play-card {
+    cursor: pointer;
+    width: 8rem;
+    height: 12rem;
+    background-color: antiquewhite;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 8px #1e2125;
+}

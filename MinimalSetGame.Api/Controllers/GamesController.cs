@@ -65,7 +65,30 @@ public class GamesController : ControllerBase
         if (game is null)
             return NotFound("No Game Found");
 
-        return Ok(game);
+        var gameResponse = new GameResponse(
+            game.Id,
+            game.Deck.Select(
+                card => new CardResponse(
+                Id: card.Id,
+                Number: (int)card.Number,
+                Color: (int)card.Color,
+                Shape: (int)card.Shape,
+                Fill: (int)card.Fill,
+                card.IsDrawn))
+                .ToList(),
+            game.Sets.Select(
+                set => new SetResponse(
+                set.Id,
+                set.GameId,
+                set.Cards
+                    .Select(c => c.Id)
+                    .ToList()))
+                .ToList(),
+            (int)game.State,
+            game.CreatedAt,
+            game.FinishedAt);
+
+        return Ok(gameResponse);
     }
 
     [HttpPost]
