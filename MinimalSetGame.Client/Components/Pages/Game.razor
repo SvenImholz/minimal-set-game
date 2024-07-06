@@ -54,6 +54,17 @@
         {
             _selectedCards.Add(card);
         }
+
+        if (_selectedCards.Count == 3)
+        {
+            TryAddSet();
+        }
+    }
+
+    void TryAddSet()
+    {
+        // todo: add functionality
+        throw new NotImplementedException();
     }
 
     private bool IsCardSelected(CardResponse card) { return _selectedCards.Contains(card); }
