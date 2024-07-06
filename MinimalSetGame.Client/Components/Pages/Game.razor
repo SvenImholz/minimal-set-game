@@ -15,12 +15,6 @@
                     <Card CardResponse="@card" IsSelected="@IsCardSelected(card)"
                           OnCardSelected="OnCardClick"></Card>
                 </div>
-                _cardCount++;
-                if (_cardCount % 5 == 0)
-                {
-                    <!--This creates a new line after every 5 cards -->
-                    @:</div><div class="row justify-content-center">
-                }
             }
         }
         else
