@@ -43,6 +43,7 @@ sp =>
 
 // register repositories
 builder.Services.AddScoped<IGamesHttpRepository, GamesHttpRepository>();
+builder.Services.AddScoped<ISetHttpRepository, SetHttpRepository>();
 
 
 await builder.Build().RunAsync();

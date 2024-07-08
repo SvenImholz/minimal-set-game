@@ -61,7 +61,6 @@ public class SetsRepository : ISetsRepository
         if (game is null)
             return null;
 
-
         // Get all sets that contain any of the cards to add
         var setsWithCards = _dataContext.Sets
             .Where(set => set.Cards.Any(card => cardsToAdd.Contains(card)))
@@ -70,7 +69,6 @@ public class SetsRepository : ISetsRepository
         // If any of the cards to add is already in a set, return null
         if (setsWithCards.Count != 0)
             return null;
-
 
         _dataContext.Sets.Add(newSet);
         await _dataContext.SaveChangesAsync();

@@ -1,19 +1,23 @@
 @page "/Games/{GameId:guid}"
 @inject IGamesHttpRepository GamesHttpRepository
+@inject ISetHttpRepository SetHttpRepository
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
 <PageTitle>Game</PageTitle>
 
-<div class="container bg-light p-5">
+<div class="container bg-light p-5 mb-5">
     <div class="row justify-content-center">
         @if (_gameResponse?.Deck is not null)
         {
-            @foreach (var card in _gameResponse.Deck.Where(c => c.IsDrawn))
+            @foreach (var card in _gameResponse.Deck.Where(
+                      c => c.IsDrawn && !
+                          _gameResponse.Sets.All(s => s.Cards.Contains(c.Id))))
             {
                 <div class="col-auto m-2">
                     <Card CardResponse="@card" IsSelected="@IsCardSelected(card)"
-                          OnCardSelected="OnCardClick"></Card>
+                          OnCardSelected="OnCardClick">
+                    </Card>
                 </div>
             }
         }
@@ -24,6 +28,12 @@
             </div>
         }
     </div>
+</div>
+
+<div class="container bg-light p-5">
+    <ul>
+        <li>Sets: @_gameResponse?.Sets.Count</li>
+    </ul>
 </div>
 
 @code {
@@ -63,8 +73,15 @@
 
     void TryAddSet()
     {
-        // todo: add functionality
-        throw new NotImplementedException();
+        var request =
+            new CreateSetRequest(
+            GameId,
+            _selectedCards.Select(c => c.Id).ToList());
+
+        SetHttpRepository.TryCreateSet(GameId, request);
+
+        _selectedCards.Clear();
+
     }
 
     private bool IsCardSelected(CardResponse card) { return _selectedCards.Contains(card); }
