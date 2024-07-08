@@ -1,4 +1,6 @@
 @page "/Games/{GameId:guid}"
+@using MinimalSetGame.Client.Entities
+@using Card=MinimalSetGame.Client.Entities.Card
 @inject IGamesHttpRepository GamesHttpRepository
 @inject ISetHttpRepository SetHttpRepository
 @inject ICardsHttpRepository CardsHttpRepository
@@ -12,8 +14,11 @@
         @if (_gameResponse?.Deck is not null)
         {
             @foreach (var card in _gameResponse.Deck.Where(
-                      c => c.IsDrawn && !_gameResponse.Sets.Any(s => s.Cards.Contains(c
-                      .Id))))
+                      c => c.IsDrawn &&
+                           !_gameResponse.Sets.Any(
+                           s => s.Cards.Contains(
+                           c
+                               .Id))))
             {
                 <div class="col-auto m-2">
                     <Card CardResponse="@card" IsSelected="@IsCardSelected(card)"
@@ -43,6 +48,11 @@
 
     List<CardResponse> _selectedCards = [];
 
+//todo: Map gamerResponse to game and the rest of the entities. So i can use the entities instead of the responses, this should fix the issue with the selected cards and the layout not updating
+    List<Card> _cards = []; // This is the list of cards that are drawn and not in a set
+    List<Set>  _sets = [];
+
+
     [Parameter]
     public Guid GameId { get; set; }
 
@@ -58,9 +68,12 @@
 
         var totalCards = _gameResponse?.Deck.Count ?? 0;
         const int initialAmountOfCards = 12;
-        var drawnCardsNotInSet = _gameResponse?.Deck.Where(c => c.IsDrawn &&
-            !_gameResponse.Sets.Any(s => s.Cards.Contains(c.Id))).ToList()
-            .Count ?? 0;
+        var drawnCardsNotInSet = _gameResponse?.Deck.Where(
+                                     c => c.IsDrawn &&
+                                          !_gameResponse.Sets.Any(s => s.Cards.Contains(c.Id)))
+                                     .ToList()
+                                     .Count ??
+                                 0;
 
         if (drawnCardsNotInSet < initialAmountOfCards)
         {
@@ -86,17 +99,18 @@
         }
     }
 
-    void TryAddSet()
+    async void TryAddSet()
     {
         var request =
             new CreateSetRequest(
             GameId,
             _selectedCards.Select(c => c.Id).ToList());
 
-        SetHttpRepository.TryCreateSet(GameId, request);
+        await SetHttpRepository.TryCreateSet(GameId, request);
 
         _selectedCards.Clear();
-
+        _gameResponse = await GamesHttpRepository.GetGameById(GameId);
+        StateHasChanged();
     }
 
     private bool IsCardSelected(CardResponse card) { return _selectedCards.Contains(card); }
