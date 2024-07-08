@@ -1,6 +1,7 @@
 @page "/Games/{GameId:guid}"
 @inject IGamesHttpRepository GamesHttpRepository
 @inject ISetHttpRepository SetHttpRepository
+@inject ICardsHttpRepository CardsHttpRepository
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
@@ -11,8 +12,8 @@
         @if (_gameResponse?.Deck is not null)
         {
             @foreach (var card in _gameResponse.Deck.Where(
-                      c => c.IsDrawn && !
-                          _gameResponse.Sets.All(s => s.Cards.Contains(c.Id))))
+                      c => c.IsDrawn && !_gameResponse.Sets.Any(s => s.Cards.Contains(c
+                      .Id))))
             {
                 <div class="col-auto m-2">
                     <Card CardResponse="@card" IsSelected="@IsCardSelected(card)"
@@ -32,6 +33,8 @@
 
 <div class="container bg-light p-5">
     <ul>
+        <li>Cards: @_gameResponse?.Deck?.Count</li>
+        <li>Drawn cards: @_gameResponse?.Deck?.FindAll(c => c.IsDrawn).Count</li>
         <li>Sets: @_gameResponse?.Sets.Count</li>
     </ul>
 </div>
@@ -52,6 +55,18 @@
 
         if (_gameResponse is null)
             NavigationManager.NavigateTo("games");
+
+        var totalCards = _gameResponse?.Deck.Count ?? 0;
+        const int initialAmountOfCards = 12;
+        var drawnCardsNotInSet = _gameResponse?.Deck.Where(c => c.IsDrawn &&
+            !_gameResponse.Sets.Any(s => s.Cards.Contains(c.Id))).ToList()
+            .Count ?? 0;
+
+        if (drawnCardsNotInSet < initialAmountOfCards)
+        {
+            await CardsHttpRepository.DrawCards(GameId, initialAmountOfCards - drawnCardsNotInSet);
+            _gameResponse = await GamesHttpRepository.GetGameById(GameId);
+        }
     }
 
     private void OnCardClick(CardResponse card)

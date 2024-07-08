@@ -44,6 +44,7 @@ sp =>
 // register repositories
 builder.Services.AddScoped<IGamesHttpRepository, GamesHttpRepository>();
 builder.Services.AddScoped<ISetHttpRepository, SetHttpRepository>();
+builder.Services.AddScoped<ICardsHttpRepository, CardsHttpRepository>();
 
 
 await builder.Build().RunAsync();
