@@ -36,13 +36,13 @@ public class SetsController : ControllerBase
             set.Cards.Select(card => card.Id).ToList()))
             .ToList();
 
-        return Ok(response);
+        return response;
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<SetResponse>> TryCreateSet(
+    public async Task<ActionResult<SetResponse?>> TryCreateSet(
         Guid gameId,
         CreateSetRequest setRequest)
     {
@@ -51,9 +51,11 @@ public class SetsController : ControllerBase
         if (result is null)
             return BadRequest("Invalid set.");
 
-        return CreatedAtAction(
-        nameof(TryCreateSet),
-        new { gameId, setId = result.Id },
-        result);
+        var response = new SetResponse(
+            result.Id,
+            result.GameId,
+            result.Cards.Select(card => card.Id).ToList());
+
+        return response;
     }
 }

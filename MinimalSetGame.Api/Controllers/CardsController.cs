@@ -8,28 +8,30 @@ namespace MinimalSetGame.Api.Controllers;
 [ApiController]
 [Route("api/games/{gameId:guid}/[controller]")]
 [Authorize]
-public class CardsController : ControllerBase
+public class CardsController(ICardRepository cardRepository) : ControllerBase
 {
-    readonly ICardRepository _cardRepository;
-
-    public CardsController(ICardRepository cardRepository)
-    {
-        _cardRepository = cardRepository;
-    }
 
     [HttpGet]
     public async Task<ActionResult<List<CardResponse>>> GetCards(Guid gameId)
     {
-        var cards = await _cardRepository.GetCards(gameId);
+        var cards = await cardRepository.GetCards(gameId);
 
-        return Ok(cards);
+        var response = cards.Select(c => new CardResponse(c.Id, (int)c.Number, (int)c
+                .Color, (int)c
+                .Shape, (int)c.Fill, c.IsDrawn)).ToList();
+
+        return response;
     }
 
     [HttpGet("Draw/{count:int}")]
     public async Task<ActionResult<List<CardResponse>>> DrawCards(Guid gameId, int count)
     {
-        var cards = await _cardRepository.DrawCards(gameId, count);
+        var cards = await cardRepository.DrawCards(gameId, count);
 
-        return Ok(cards);
+        var response = cards.Select(c => new CardResponse(c.Id, (int)c.Number, (int)c
+                .Color, (int)c
+                .Shape, (int)c.Fill, c.IsDrawn)).ToList();
+
+        return response;
     }
 }

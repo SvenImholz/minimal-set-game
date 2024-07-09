@@ -1,12 +1,13 @@
 @inject IGamesHttpRepository GamesHttpRepository
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
 <h3>My Games</h3>
 
 <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary">New Game</button>
+    <button class="btn btn-primary" @onclick="CreateGame">New Game</button>
 </div>
 
 <table class="table">
@@ -56,4 +57,17 @@
 
     private void ContinueGame(Guid gameId) { NavigationManager.NavigateTo($"games/{gameId}"); }
 
+    async void CreateGame()
+    {
+        await HttpClient.PostAsync("api/games", new StringContent(""))
+            .ContinueWith(
+            async task =>
+            {
+                if (task.Result.IsSuccessStatusCode)
+                {
+                    _games = await GamesHttpRepository.GetGames();
+                    StateHasChanged();
+                }
+            });
+    }
 }

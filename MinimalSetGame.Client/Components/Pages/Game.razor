@@ -1,9 +1,11 @@
 @page "/Games/{GameId:guid}"
+@using System.Net
 @using MinimalSetGame.Client.Entities
 @using Card=MinimalSetGame.Client.Entities.Card
 @inject IGamesHttpRepository GamesHttpRepository
 @inject ISetHttpRepository SetHttpRepository
 @inject ICardsHttpRepository CardsHttpRepository
+@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
@@ -13,12 +15,7 @@
     <div class="row justify-content-center">
         @if (_gameResponse?.Deck is not null)
         {
-            @foreach (var card in _gameResponse.Deck.Where(
-                      c => c.IsDrawn &&
-                           !_gameResponse.Sets.Any(
-                           s => s.Cards.Contains(
-                           c
-                               .Id))))
+            @foreach (var card in CardsOnTable)
             {
                 <div class="col-auto m-2">
                     <Card CardResponse="@card" IsSelected="@IsCardSelected(card)"
@@ -37,21 +34,42 @@
 </div>
 
 <div class="container bg-light p-5">
-    <ul>
-        <li>Cards: @_gameResponse?.Deck?.Count</li>
-        <li>Drawn cards: @_gameResponse?.Deck?.FindAll(c => c.IsDrawn).Count</li>
-        <li>Sets: @_gameResponse?.Sets.Count</li>
-    </ul>
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li>Cards: @Deck.Count</li>
+                <li>Drawn cards: @DrawnCards.Count</li>
+                <li>Sets: @Sets.Count</li>
+            </ul>
+        </div>
+        <div class="col">
+            <button class="btn btn-info" @onclick="(() => DrawCards(1))">Draw card</button>
+            <button class="btn btn-light" @onclick="GetHint">Get Hint</button>
+        </div>
+    </div>
 </div>
 
 @code {
 
     List<CardResponse> _selectedCards = [];
 
-//todo: Map gamerResponse to game and the rest of the entities. So i can use the entities instead of the responses, this should fix the issue with the selected cards and the layout not updating
-    List<Card> _cards = []; // This is the list of cards that are drawn and not in a set
-    List<Set>  _sets = [];
+    List<CardResponse> DrawnCards => _gameResponse?.Deck.FindAll(
+                                     c => c
+                                         .IsDrawn) ??
+                                     [];
 
+    List<SetResponse> Sets => _gameResponse?.Sets ?? [];
+    List<CardResponse> Deck => _gameResponse?.Deck ?? [];
+    const int InitialAmountOfCards = 12;
+
+    List<CardResponse> CardsOnTable => _gameResponse?.Deck.Where(
+                                           c => c.IsDrawn &&
+                                                !_gameResponse.Sets.Any(
+                                                s => s.Cards.Contains(
+                                                c
+                                                    .Id)))
+                                           .ToList() ??
+                                       [];
 
     [Parameter]
     public Guid GameId { get; set; }
@@ -66,18 +84,17 @@
         if (_gameResponse is null)
             NavigationManager.NavigateTo("games");
 
-        var totalCards = _gameResponse?.Deck.Count ?? 0;
-        const int initialAmountOfCards = 12;
-        var drawnCardsNotInSet = _gameResponse?.Deck.Where(
-                                     c => c.IsDrawn &&
-                                          !_gameResponse.Sets.Any(s => s.Cards.Contains(c.Id)))
-                                     .ToList()
-                                     .Count ??
-                                 0;
+        var drawnCardsNotInSet =
+            _gameResponse?.Deck.Where(
+                c => c.IsDrawn &&
+                     !_gameResponse.Sets.Any(s => s.Cards.Contains(c.Id)))
+                .ToList()
+                .Count ??
+            0;
 
-        if (drawnCardsNotInSet < initialAmountOfCards)
+        if (drawnCardsNotInSet < InitialAmountOfCards)
         {
-            await CardsHttpRepository.DrawCards(GameId, initialAmountOfCards - drawnCardsNotInSet);
+            await CardsHttpRepository.DrawCards(GameId, InitialAmountOfCards - drawnCardsNotInSet);
             _gameResponse = await GamesHttpRepository.GetGameById(GameId);
         }
     }
@@ -106,12 +123,58 @@
             GameId,
             _selectedCards.Select(c => c.Id).ToList());
 
-        await SetHttpRepository.TryCreateSet(GameId, request);
+        var response = await SetHttpRepository.TryCreateSet(GameId, request);
 
-        _selectedCards.Clear();
-        _gameResponse = await GamesHttpRepository.GetGameById(GameId);
-        StateHasChanged();
+        if (response is null)
+        {
+            _selectedCards.Clear();
+            StateHasChanged();
+            return;
+        }
+        else
+        {
+            _gameResponse = await GamesHttpRepository.GetGameById(GameId);
+            if (CardsOnTable.Count < InitialAmountOfCards)
+            {
+                await DrawCards(InitialAmountOfCards - CardsOnTable.Count);
+            }
+            _selectedCards.Clear();
+            _gameResponse = await GamesHttpRepository.GetGameById(GameId);
+            StateHasChanged();
+        }
+
     }
 
     private bool IsCardSelected(CardResponse card) { return _selectedCards.Contains(card); }
+
+    async Task DrawCards(int amount = 1)
+    {
+        var response = await HttpClient.GetAsync($"api/games/{GameId}/Cards/Draw/{amount}");
+
+        if (!response.IsSuccessStatusCode)
+            return;
+
+        _gameResponse = await GamesHttpRepository.GetGameById(GameId);
+
+    }
+
+    async void GetHint()
+    {
+        var response = await HttpClient.GetAsync($"api/games/{GameId}/Hint");
+
+        if (!response.IsSuccessStatusCode)
+            return;
+
+        var hint = await response.Content.ReadFromJsonAsync<HintResponse>();
+
+        _selectedCards.Clear();
+
+        if (hint?.Cards.Count == 3)
+            foreach (var card in hint.Cards)
+            {
+                _selectedCards.Add(card);
+            }
+
+        StateHasChanged();
+    }
 }

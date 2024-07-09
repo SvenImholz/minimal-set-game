@@ -8,18 +8,11 @@ namespace MinimalSetGame.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PlayerController : ControllerBase
+public class PlayerController(
+    UserManager<Player> userManager,
+    SignInManager<Player> signInManager)
+    : ControllerBase
 {
-    readonly SignInManager<Player> _signInManager;
-    readonly UserManager<Player> _userManager;
-
-    public PlayerController(
-        UserManager<Player> userManager,
-        SignInManager<Player> signInManager)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-    }
 
     [HttpPost("register")]
     public async Task<ActionResult<PlayerResponse>> Register(
@@ -35,12 +28,12 @@ public class PlayerController : ControllerBase
             LastName = registerPlayerRequest.LastName
         };
 
-        var result = await _userManager.CreateAsync(player, player.PasswordHash);
+        var result = await userManager.CreateAsync(player, player.PasswordHash);
 
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
-        await _signInManager.SignInAsync(player, true);
+        await signInManager.SignInAsync(player, true);
 
         return Ok("Player registered successfully.");
     }
@@ -51,7 +44,7 @@ public class PlayerController : ControllerBase
     public async Task<ActionResult<PlayerResponse>> Login(
         LoginPlayerRequest loginPlayerRequest)
     {
-        var result = await _signInManager.PasswordSignInAsync(
+        var result = await signInManager.PasswordSignInAsync(
         loginPlayerRequest.Email,
         loginPlayerRequest.Password,
         true,
@@ -60,7 +53,7 @@ public class PlayerController : ControllerBase
         if (!result.Succeeded)
             return BadRequest("Invalid login attempt.");
 
-        var player = await _userManager.FindByEmailAsync(loginPlayerRequest.Email);
+        var player = await userManager.FindByEmailAsync(loginPlayerRequest.Email);
 
         if (player?.Email is null)
             return BadRequest("Invalid login attempt.");
@@ -79,7 +72,7 @@ public class PlayerController : ControllerBase
     [Authorize]
     public async Task<ActionResult<PlayerResponse>> GetPlayerInfo()
     {
-        var player = await _userManager.GetUserAsync(User);
+        var player = await userManager.GetUserAsync(User);
 
         if (player is null)
             return BadRequest("Invalid player.");

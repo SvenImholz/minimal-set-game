@@ -1,3 +1,4 @@
+using System.Text.Json;
 using BlazorWasmAuth.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -6,6 +7,7 @@ using MinimalSetGame.Client.Components;
 using MinimalSetGame.Client.HttpRepositories.Implementations;
 using MinimalSetGame.Client.HttpRepositories.Interfaces;
 using MinimalSetGame.Client.Identity;
+using MinimalSetGame.Contracts;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -45,6 +47,5 @@ sp =>
 builder.Services.AddScoped<IGamesHttpRepository, GamesHttpRepository>();
 builder.Services.AddScoped<ISetHttpRepository, SetHttpRepository>();
 builder.Services.AddScoped<ICardsHttpRepository, CardsHttpRepository>();
-
 
 await builder.Build().RunAsync();

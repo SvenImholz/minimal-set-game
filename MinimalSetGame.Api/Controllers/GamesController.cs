@@ -13,18 +13,12 @@ namespace MinimalSetGame.Api.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Authorize]
-public class GamesController : ControllerBase
+public class GamesController(IGameRepository gameRepository) : ControllerBase
 {
-    readonly IGameRepository _gameRepository;
-    public GamesController(IGameRepository gameRepository)
-    {
-        _gameRepository = gameRepository;
-    }
-
     [HttpGet]
     public async Task<ActionResult<List<GameResponse>>> GetGames()
     {
-        var games = await _gameRepository.GetAllGames();
+        var games = await gameRepository.GetAllGames();
         // map to response
         var response = games.Select(
             game => new GameResponse(
@@ -52,7 +46,7 @@ public class GamesController : ControllerBase
             )
             .ToList();
 
-        return Ok(response);
+        return response;
     }
 
     [HttpGet("{id:guid}")]
@@ -60,7 +54,7 @@ public class GamesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<GameResponse>> GetGame(Guid id)
     {
-        var game = await _gameRepository.GetGameById(id);
+        var game = await gameRepository.GetGameById(id);
 
         if (game is null)
             return NotFound("No Game Found");
@@ -88,7 +82,7 @@ public class GamesController : ControllerBase
             game.CreatedAt,
             game.FinishedAt);
 
-        return Ok(gameResponse);
+        return gameResponse;
     }
 
     [HttpPost]
@@ -100,19 +94,38 @@ public class GamesController : ControllerBase
 
         var playerId = new Guid(userId);
 
+        var createdGame = await gameRepository.Add(playerId);
 
-        var createdGame = await _gameRepository.Add(playerId);
+        var gameResponse = new GameResponse(
+            createdGame.Id,
+            createdGame.Deck.Select(
+                card => new CardResponse(
+                Id: card.Id,
+                Number: (int)card.Number,
+                Color: (int)card.Color,
+                Shape: (int)card.Shape,
+                Fill: (int)card.Fill,
+                card.IsDrawn))
+                .ToList(),
+            createdGame.Sets.Select(
+                set => new SetResponse(
+                set.Id,
+                set.GameId,
+                set.Cards
+                    .Select(c => c.Id)
+                    .ToList()))
+                .ToList(),
+            (int)createdGame.State,
+            createdGame.CreatedAt,
+            createdGame.FinishedAt);
 
-        return CreatedAtAction(
-        nameof(GetGames),
-        new { id = createdGame.Id },
-        createdGame);
+        return gameResponse;
     }
 
     [HttpGet("{id:Guid}/hint")]
     public async Task<ActionResult<HintResponse>> GetHint(Guid id)
     {
-        var game = await _gameRepository.GetGameById(id);
+        var game = await gameRepository.GetGameById(id);
 
         if (game is null)
             return NotFound("No Game Found");
@@ -122,6 +135,6 @@ public class GamesController : ControllerBase
         if (hint is null)
             return NotFound("No possible set found");
 
-        return Ok(hint);
+        return hint;
     }
 }

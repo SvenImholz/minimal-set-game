@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using MinimalSetGame.Api.Data;
 using MinimalSetGame.Api.Entities;
@@ -17,6 +18,12 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services.AddControllers();
+    // .AddJsonOptions(
+    // options =>
+    // {
+    //     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseUpper;
+    // });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(

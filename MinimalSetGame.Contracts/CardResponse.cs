@@ -7,4 +7,4 @@ public record CardResponse(
     int Shape,
     int Fill,
     bool IsDrawn
-    );
+);

@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using MinimalSetGame.Client.HttpRepositories.Interfaces;
 using MinimalSetGame.Contracts;
 
@@ -22,10 +23,18 @@ public class SetHttpRepository : ISetHttpRepository
 
     public async Task<SetResponse?> TryCreateSet(Guid gameId, CreateSetRequest setRequest)
     {
-        var response = await _httpClient.PostAsJsonAsync(
+        var request = await _httpClient.PostAsJsonAsync(
         $"/api/games/{gameId}/sets",
         setRequest);
 
-        return await response.Content.ReadFromJsonAsync<SetResponse>();
+        if (!request.IsSuccessStatusCode)
+            return null;
+
+        var response = await request.Content.ReadFromJsonAsync<SetResponse>();
+
+        return response;
+
+
+
     }
 }
